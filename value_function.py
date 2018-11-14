@@ -17,8 +17,7 @@ class Q_learning(object):
             a = traj[1]
             r = traj[2]
             s1 = traj[3]
-            self.q_table[s0[0], s0[1], a] = (1. - self.alpha) * self.q_table[s0[0], s0[1], a] + self.alpha * (
-                        r + self.gamma * np.max(self.q_table[s1[0], s1[1]]))
+            self.q_table[s0[0], s0[1], a] = self.q_table[s0[0], s0[1], a] + self.alpha * (r + self.gamma * np.max(self.q_table[s1[0], s1[1]]) - self.q_table[s0[0], s0[1], a])
 
     def optimal_action(self, state):
         max_q = None
@@ -36,7 +35,7 @@ class Q_learning(object):
             # consider multiple maximums
             candidate = np.where(self.q_table[s[0], s[1]] == max_q)[0]
             l = len(candidate)
-            idx = random.randint(0, l-1)
+            idx = random.randint(0, l - 1)
             return candidate[idx]
 
     def act(self, state, exploration=True):
@@ -60,6 +59,7 @@ class ValueFunction(object):
     """
     Debugging ...
     """
+
     def __init__(self, state_range, gamma=0.99, alpha=0.3):
         self.v_table = np.zeros(state_range)
         self.gamma = gamma
@@ -75,7 +75,7 @@ class ValueFunction(object):
             # if i == 0:
             #     self.v_table[s1[0], s1[1]] = (1. - self.alpha) * self.v_table[s1[0], s1[1]] + self.alpha * r
             self.v_table[s0[0], s0[1]] = (1. - self.alpha) * self.v_table[s0[0], s0[1]] + self.alpha * (
-                        r + self.gamma * self.v_table[s1[0], s1[1]])
+                    r + self.gamma * self.v_table[s1[0], s1[1]])
 
     def save_table(self, save_path):
         np.save(save_path, self.v_table)
