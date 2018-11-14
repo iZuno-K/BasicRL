@@ -1,9 +1,3 @@
-import sys
-from pathlib import Path
-print(Path(__file__).parent)
-sys.path.append(Path(__file__).parent)
-
-sys.path.append()
 from environment.discrete_maze import Discrete2DMaze
 from value_function import Q_learning
 import numpy as np
